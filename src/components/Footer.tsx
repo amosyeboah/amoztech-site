@@ -35,12 +35,12 @@ const Footer = () => {
                 </svg>
               </div>
               <div>
-                <span className="text-lg font-bold logo-text">CLOUD ERP</span>
-                <p className="text-[10px] text-gray-500 font-medium">THE POWER OF POSSIBILITY</p>
+                <span className="text-lg font-bold logo-text">amozTech</span>
+                <p className="text-[10px] text-gray-500 font-medium">THE POWER OF NOW</p>
               </div>
             </Link>
             <p className="text-gray-600 text-sm">
-              Simplifying business management with affordable, powerful cloud solutions.
+              Simplifying business management with affordable, tech solutions.
             </p>
           </div>
           
@@ -78,7 +78,7 @@ const Footer = () => {
         <div className="border-t border-gray-200 mt-10 pt-6">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-sm text-gray-600 mb-4 md:mb-0">
-              © {new Date().getFullYear()} Cloud ERP. All rights reserved.
+              © {new Date().getFullYear()} amozTech. All rights reserved.
             </p>
             <div className="flex space-x-6">
               <Link to="/" className="text-gray-600 hover:text-cloud-blue text-sm">Privacy Policy</Link>

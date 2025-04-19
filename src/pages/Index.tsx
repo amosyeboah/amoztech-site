@@ -69,7 +69,7 @@ const Index = () => {
               Trusted by Businesses Worldwide
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              See what our customers are saying about Cloud ERP
+              See what our customers are saying about amozTech Solutions
             </p>
           </div>
 
@@ -83,7 +83,7 @@ const Index = () => {
                 ))}
               </div>
               <p className="text-gray-600 italic mb-6">
-                "Cloud ERP has completely transformed how we manage our retail business. The inventory tracking alone has saved us thousands of dollars."
+                "amozTech POS has completely transformed how we manage our retail business. The inventory tracking alone has saved us thousands of dollars."
               </p>
               <div>
                 <p className="font-semibold text-gray-800">Sarah Johnson</p>
@@ -117,11 +117,11 @@ const Index = () => {
                 ))}
               </div>
               <p className="text-gray-600 italic mb-6">
-                "As a restaurant owner, I needed a system that could handle both front and back-of-house operations. Cloud ERP does it all seamlessly."
+                "As a supermarket owner, I needed a system that could handle both front and back-of-house operations. amozTech POS does it all seamlessly."
               </p>
               <div>
                 <p className="font-semibold text-gray-800">Elena Rodriguez</p>
-                <p className="text-gray-500 text-sm">Owner, Fusion Restaurant</p>
+                <p className="text-gray-500 text-sm">Owner, Fusion Supermarket</p>
               </div>
             </div>
           </div>
@@ -135,7 +135,7 @@ const Index = () => {
             Ready to streamline your business operations?
           </h2>
           <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-8">
-            Join thousands of businesses who trust Cloud ERP for their daily operations. Get started today with our 14-day free trial.
+            Join hundreds of businesses who trust amozTech Solutions for their daily operations. Get started today with our 14-day free trial.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button className="bg-cloud-blue hover:bg-blue-600 text-white px-8 py-6 text-lg rounded-md">

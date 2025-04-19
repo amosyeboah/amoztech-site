@@ -21,7 +21,7 @@ const Hero = () => {
         {/* Right Side - Image */}
         <div className="w-full md:w-1/2">
           <img 
-            src="/lovable-uploads/cefaab59-d79b-406f-8c58-f0203baf2bd1.png" 
+            src="/lovable-uploads/P-3.png" 
             alt="Business person celebrating success with a tablet" 
             className="w-full h-auto object-cover rounded-lg shadow-lg"
           />

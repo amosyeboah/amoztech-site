@@ -40,8 +40,8 @@ const Navbar = () => {
               </svg>
             </div>
             <div>
-              <span className="text-2xl font-bold logo-text">CLOUD ERP</span>
-              <p className="text-xs text-gray-500 font-medium">THE POWER OF POSSIBILITY</p>
+              <span className="text-2xl font-bold logo-text">amozTech</span>
+              <p className="text-xs text-gray-500 font-medium">THE POWER OF NOW</p>
             </div>
           </Link>
         </div>
