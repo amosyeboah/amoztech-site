@@ -1,3 +1,4 @@
+
 import { Button } from '@/components/ui/button';
 
 const Hero = () => {
@@ -15,7 +16,7 @@ const Hero = () => {
             Best POS, Invoicing, Inventory & Service management application for your growing business!
           </p>
           <Button 
-            className="bg-cloud-blue hover:bg-blue-600 text-white px-8 py-6 text-lg rounded-md opacity-0 animate-fade-in-up hover:animate-bounce-subtle"
+            className="bg-cloud-blue hover:bg-blue-600 text-white px-8 py-6 text-lg rounded-md opacity-0 animate-fade-in-up hover:animate-bounce-subtle transform transition-all duration-300 hover:scale-105"
             style={{ animationDelay: '0.9s', animationFillMode: 'forwards' }}>
             Start your Free Trial
           </Button>
@@ -27,23 +28,26 @@ const Hero = () => {
             <img 
               src="/lovable-uploads/P-3.png" 
               alt="Business person celebrating success with a tablet" 
-              className="w-full h-auto object-cover rounded-lg shadow-lg animate-float"
+              className="w-full h-auto object-cover rounded-lg shadow-lg animate-float transform hover:scale-105 transition-all duration-500"
             />
-            {/* Decorative Elements */}
+            {/* Decorative Elements with enhanced animations */}
             <div className="absolute -top-4 -left-4 w-20 h-20 bg-cloud-blue/10 rounded-full animate-float" 
-                 style={{ animationDelay: '0.5s' }}></div>
+                 style={{ animationDelay: '0.5s', animationDuration: '4s' }}></div>
             <div className="absolute -bottom-4 -right-4 w-16 h-16 bg-cloud-yellow/10 rounded-full animate-float"
-                 style={{ animationDelay: '1s' }}></div>
+                 style={{ animationDelay: '1s', animationDuration: '5s' }}></div>
             <div className="absolute top-1/2 -right-8 w-12 h-12 bg-cloud-green/10 rounded-full animate-float"
-                 style={{ animationDelay: '1.5s' }}></div>
+                 style={{ animationDelay: '1.5s', animationDuration: '6s' }}></div>
           </div>
         </div>
       </div>
 
-      {/* Background Decorative Elements */}
-      <div className="absolute top-20 left-10 w-32 h-32 bg-cloud-blue/5 rounded-full blur-xl"></div>
-      <div className="absolute bottom-20 right-10 w-40 h-40 bg-cloud-yellow/5 rounded-full blur-xl"></div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cloud-green/5 rounded-full blur-3xl"></div>
+      {/* Background Decorative Elements with parallax effect */}
+      <div className="absolute top-20 left-10 w-32 h-32 bg-cloud-blue/5 rounded-full blur-xl animate-float"
+           style={{ animationDuration: '7s' }}></div>
+      <div className="absolute bottom-20 right-10 w-40 h-40 bg-cloud-yellow/5 rounded-full blur-xl animate-float"
+           style={{ animationDuration: '8s' }}></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cloud-green/5 rounded-full blur-3xl animate-float"
+           style={{ animationDuration: '10s' }}></div>
     </div>
   );
 };
