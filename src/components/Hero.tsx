@@ -15,7 +15,8 @@ const Hero = () => {
             Best POS, Invoicing, Inventory & Service management application for your growing business!
           </p>
           <Button 
-            className="bg-cloud-blue hover:bg-blue-600 text-white px-8 py-6 text-lg rounded-md opacity-0 animate-fade-in-up hover:animate-bounce-subtle"
+            size="lg"
+            className="px-8 py-6 text-lg opacity-0 animate-fade-in-up hover:scale-105 transition-transform duration-200 relative z-10"
             style={{ animationDelay: '0.9s', animationFillMode: 'forwards' }}>
             Start your Free Trial
           </Button>
