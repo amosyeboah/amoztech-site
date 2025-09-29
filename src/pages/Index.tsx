@@ -38,14 +38,15 @@ const Index = () => {
       <section className="py-20 px-6 bg-white">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="animate-fade-in">
-              <div className="h-[500px] relative overflow-hidden rounded-xl group">
+            <div className="opacity-0 animate-fade-in">
+              <div className="h-[500px] relative overflow-hidden rounded-xl shadow-lg">
                 <img 
                   src="/images/pos-pic.jpg" 
                   alt="POS System" 
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                  style={{ imageRendering: 'crisp-edges' }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </div>
             </div>
             <div className="space-y-8">
