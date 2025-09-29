@@ -38,26 +38,25 @@ const Index = () => {
       <section className="py-20 px-6 bg-white">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="opacity-0 animate-fade-in">
+            <div>
               <div className="h-[500px] relative overflow-hidden rounded-xl shadow-lg">
                 <img 
                   src="/images/pos-pic.jpg" 
                   alt="POS System" 
                   className="w-full h-full object-cover"
                   loading="eager"
-                  style={{ imageRendering: 'crisp-edges' }}
                 />
               </div>
             </div>
             <div className="space-y-8">
-              <div className="animate-fade-in [animation-delay:200ms]">
+              <div>
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
                   Start Managing Your Business in 3 Simple Steps
                 </h2>
               </div>
               
               <div className="space-y-6">
-                <div className="flex items-start animate-fade-in [animation-delay:400ms]">
+                <div className="flex items-start">
                   <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
                     <span className="text-xl font-bold text-cloud-blue">1</span>
                   </div>
@@ -67,7 +66,7 @@ const Index = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-start animate-fade-in [animation-delay:600ms]">
+                <div className="flex items-start">
                   <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
                     <span className="text-xl font-bold text-cloud-blue">2</span>
                   </div>
@@ -77,7 +76,7 @@ const Index = () => {
                   </div>
                 </div>
                 
-                <div className="flex items-start animate-fade-in [animation-delay:800ms]">
+                <div className="flex items-start">
                   <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
                     <span className="text-xl font-bold text-cloud-blue">3</span>
                   </div>
@@ -88,7 +87,7 @@ const Index = () => {
                 </div>
               </div>
               
-              <div className="animate-fade-in [animation-delay:1000ms]">
+              <div>
                 <Button size="lg" className="bg-cloud-blue hover:bg-blue-600 text-white px-8 py-3">
                   Get Started Now <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
