@@ -34,6 +34,69 @@ const Index = () => {
       <Navbar />
       <Hero />
       
+      {/* Three Steps Section */}
+      <section className="py-20 px-6 bg-white">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="animate-fade-in">
+              <div className="h-[500px] relative overflow-hidden rounded-xl group">
+                <img 
+                  src="/images/pos-pic.jpg" 
+                  alt="POS System" 
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </div>
+            </div>
+            <div className="space-y-8">
+              <div className="animate-fade-in [animation-delay:200ms]">
+                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+                  Start Managing Your Business in 3 Simple Steps
+                </h2>
+              </div>
+              
+              <div className="space-y-6">
+                <div className="flex items-start animate-fade-in [animation-delay:400ms]">
+                  <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                    <span className="text-xl font-bold text-cloud-blue">1</span>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Sign up</h3>
+                    <p className="text-gray-600">Sign up on a free trial account. No credit card required.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start animate-fade-in [animation-delay:600ms]">
+                  <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                    <span className="text-xl font-bold text-cloud-blue">2</span>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Set up Your Store Details</h3>
+                    <p className="text-gray-600">Configure your business information and customize your settings.</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start animate-fade-in [animation-delay:800ms]">
+                  <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                    <span className="text-xl font-bold text-cloud-blue">3</span>
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Begin Managing Your Inventory and Sales</h3>
+                    <p className="text-gray-600">Start processing transactions and tracking your business performance.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="animate-fade-in [animation-delay:1000ms]">
+                <Button size="lg" className="bg-cloud-blue hover:bg-blue-600 text-white px-8 py-3">
+                  Get Started Now <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       {/* Features Section */}
       <section className="py-20 px-6">
         <div className="container mx-auto">
