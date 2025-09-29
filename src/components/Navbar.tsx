@@ -51,6 +51,12 @@ const Navbar = () => {
           <Link to="/" className="text-gray-700 font-medium hover:text-cloud-blue transition-colors">
             Home
           </Link>
+          <Link to="/blog" className="text-gray-700 font-medium hover:text-cloud-blue transition-colors">
+            Blog
+          </Link>
+          <Link to="/faq" className="text-gray-700 font-medium hover:text-cloud-blue transition-colors">
+            FAQ
+          </Link>
           <Link to="/pricing" className="text-gray-700 font-medium hover:text-cloud-blue transition-colors">
             Pricing
           </Link>
@@ -85,6 +91,20 @@ const Navbar = () => {
             onClick={() => setIsMenuOpen(false)}
           >
             Home
+          </Link>
+          <Link
+            to="/blog"
+            className="text-gray-700 font-medium hover:text-cloud-blue transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Blog
+          </Link>
+          <Link
+            to="/faq"
+            className="text-gray-700 font-medium hover:text-cloud-blue transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            FAQ
           </Link>
           <Link
             to="/pricing"
