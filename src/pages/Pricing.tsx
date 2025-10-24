@@ -3,6 +3,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 
+// ⚠️ EDIT THIS URL TO CHANGE THE SIGNUP LINK ⚠️
+const SIGNUP_URL = "https://eggstracker.free.nf/index.php";
+
 const PricingPage = () => {
   return (
     <div>
@@ -26,7 +29,10 @@ const PricingPage = () => {
                   <span className="text-gray-600">/month</span>
                 </div>
                 <p className="text-gray-600 mb-6">Perfect for small businesses just getting started</p>
-                <Button className="w-full bg-gray-200 text-gray-800 hover:bg-gray-300">
+                <Button 
+                  className="w-full bg-gray-200 text-gray-800 hover:bg-gray-300"
+                  onClick={() => window.open(SIGNUP_URL, '_blank')}
+                >
                   Start Free Trial
                 </Button>
               </div>
@@ -72,7 +78,10 @@ const PricingPage = () => {
                   <span className="text-gray-600">/month</span>
                 </div>
                 <p className="text-gray-600 mb-6">Ideal for growing businesses with more needs</p>
-                <Button className="w-full bg-cloud-blue hover:bg-blue-600 text-white">
+                <Button 
+                  className="w-full bg-cloud-blue hover:bg-blue-600 text-white"
+                  onClick={() => window.open(SIGNUP_URL, '_blank')}
+                >
                   Start Free Trial
                 </Button>
               </div>
@@ -121,7 +130,10 @@ const PricingPage = () => {
                   <span className="text-gray-600">/month</span>
                 </div>
                 <p className="text-gray-600 mb-6">For established businesses with complex needs</p>
-                <Button className="w-full bg-gray-200 text-gray-800 hover:bg-gray-300">
+                <Button 
+                  className="w-full bg-gray-200 text-gray-800 hover:bg-gray-300"
+                  onClick={() => window.open(SIGNUP_URL, '_blank')}
+                >
                   Start Free Trial
                 </Button>
               </div>
