@@ -88,8 +88,8 @@ const Index = () => {
               </div>
               
               <div>
-                <Button size="lg" className="bg-cloud-blue hover:bg-blue-600 text-white px-8 py-3">
-                  Get Started Now <ArrowRight className="ml-2 w-5 h-5" />
+                <Button asChild size="lg" className="bg-cloud-blue hover:bg-blue-600 text-white px-8 py-3">
+                  <Link to="/pricing">Get Started Now <ArrowRight className="ml-2 w-5 h-5" /></Link>
                 </Button>
               </div>
             </div>

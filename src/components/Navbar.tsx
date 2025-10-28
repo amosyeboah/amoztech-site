@@ -66,8 +66,8 @@ const Navbar = () => {
           <Link to="/login" className="text-gray-700 font-medium hover:text-cloud-blue transition-colors">
             Login
           </Link>
-          <Button className="bg-cloud-blue hover:bg-blue-600 text-white">
-            Try For Free
+          <Button asChild className="bg-cloud-blue hover:bg-blue-600 text-white">
+            <Link to="/pricing">Try For Free</Link>
           </Button>
         </nav>
 
@@ -127,8 +127,8 @@ const Navbar = () => {
           >
             Login
           </Link>
-          <Button className="bg-cloud-blue hover:bg-blue-600 text-white w-full">
-            Try For Free
+          <Button asChild className="bg-cloud-blue hover:bg-blue-600 text-white w-full">
+            <Link to="/pricing" onClick={() => setIsMenuOpen(false)}>Try For Free</Link>
           </Button>
         </nav>
       )}

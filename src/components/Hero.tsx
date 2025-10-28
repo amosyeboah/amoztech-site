@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
@@ -15,10 +16,11 @@ const Hero = () => {
             Best POS, Invoicing, Inventory & Service management application for your growing business!
           </p>
           <Button 
+            asChild
             size="lg"
             className="px-8 py-6 text-lg opacity-0 animate-fade-in-up hover:scale-105 transition-transform duration-200 relative z-10"
             style={{ animationDelay: '0.9s', animationFillMode: 'forwards' }}>
-            Start your Free Trial
+            <Link to="/pricing">Start your Free Trial</Link>
           </Button>
         </div>
 
