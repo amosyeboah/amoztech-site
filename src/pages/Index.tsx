@@ -427,8 +427,8 @@ const Index = () => {
             Join hundreds of businesses who trust amozTech Solutions for their daily operations. Get started today with our 14-day free trial.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-cloud-blue hover:bg-blue-600 text-white px-8 py-6 text-lg rounded-md">
-              Start your Free Trial
+            <Button asChild className="bg-cloud-blue hover:bg-blue-600 text-white px-8 py-6 text-lg rounded-md">
+              <Link to="/pricing">Start your Free Trial</Link>
             </Button>
             <Button variant="outline" className="border-gray-400 text-gray-700 px-8 py-6 text-lg rounded-md">
               <Link to="/pricing" className="flex items-center">
