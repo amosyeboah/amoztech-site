@@ -6,9 +6,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import ChatBot from '@/components/ChatBot';
 
 const FAQ = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const faqCategories = [
     {
@@ -233,7 +235,7 @@ const FAQ = () => {
                 </div>
                 <h3 className="font-semibold">Live Chat</h3>
                 <p className="text-sm text-muted-foreground">Get instant help from our support team</p>
-                <Button variant="outline" className="w-full">Start Chat</Button>
+                <Button variant="outline" className="w-full" onClick={() => setIsChatOpen(true)}>Start Chat</Button>
               </CardContent>
             </Card>
             
@@ -263,6 +265,7 @@ const FAQ = () => {
       </section>
 
       <Footer />
+      {isChatOpen && <ChatBot onClose={() => setIsChatOpen(false)} />}
     </div>
   );
 };
