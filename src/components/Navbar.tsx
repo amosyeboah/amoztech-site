@@ -1,8 +1,8 @@
-
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import logo from '@/assets/amoztech-logo.png';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,36 +13,7 @@ const Navbar = () => {
         {/* Logo */}
         <div className="flex items-center">
           <Link to="/" className="flex items-center">
-            <div className="h-12 w-12 mr-3">
-              <svg viewBox="0 0 100 100" className="h-full w-full">
-                <path
-                  d="M50 10C27.91 10 10 27.91 10 50C10 72.09 27.91 90 50 90C72.09 90 90 72.09 90 50C90 27.91 72.09 10 50 10Z"
-                  fill="#FFF"
-                  stroke="url(#paint0_linear)"
-                  strokeWidth="4"
-                />
-                <path
-                  d="M30 35C30 25 38 20 50 20C65 20 70 30 70 40C70 48 65 55 50 55C35 55 30 65 30 75"
-                  stroke="url(#paint1_linear)"
-                  strokeWidth="8"
-                  strokeLinecap="round"
-                />
-                <defs>
-                  <linearGradient id="paint0_linear" x1="10" y1="50" x2="90" y2="50" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#F5A623" />
-                    <stop offset="1" stopColor="#7ED321" />
-                  </linearGradient>
-                  <linearGradient id="paint1_linear" x1="30" y1="47.5" x2="70" y2="47.5" gradientUnits="userSpaceOnUse">
-                    <stop stopColor="#F5A623" />
-                    <stop offset="1" stopColor="#7ED321" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </div>
-            <div>
-              <span className="text-2xl font-bold logo-text">amozTech</span>
-              <p className="text-xs text-gray-500 font-medium">THE POWER OF NOW</p>
-            </div>
+            <img src={logo} alt="AmozTech Logo" className="h-16 w-auto" />
           </Link>
         </div>
 
