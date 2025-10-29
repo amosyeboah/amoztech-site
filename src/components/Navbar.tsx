@@ -13,7 +13,11 @@ const Navbar = () => {
         {/* Logo */}
         <div className="flex items-center">
           <Link to="/" className="flex items-center">
-            <img src={logo} alt="AmozTech Logo" className="h-16 w-auto" />
+            <img src={logo} alt="AmozTech Logo" className="h-16 w-auto mr-3" />
+            <div>
+              <span className="text-2xl font-bold logo-text">amozTech</span>
+              <p className="text-xs text-gray-500 font-medium">THE POWER OF NOW</p>
+            </div>
           </Link>
         </div>
 

@@ -8,7 +8,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <Link to="/" className="flex items-center mb-4">
-              <img src={logo} alt="AmozTech Logo" className="h-12 w-auto" />
+              <img src={logo} alt="AmozTech Logo" className="h-12 w-auto mr-2" />
+              <div>
+                <span className="text-lg font-bold logo-text">amozTech</span>
+                <p className="text-[10px] text-gray-500 font-medium">THE POWER OF NOW</p>
+              </div>
             </Link>
             <p className="text-gray-600 text-sm">
               Simplifying business management with affordable, tech solutions.
