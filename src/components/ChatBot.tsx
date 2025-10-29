@@ -134,13 +134,21 @@ const ChatBot = () => {
     <>
       {/* Floating Chat Button */}
       {!isOpen && (
-        <Button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg bg-cloud-blue hover:bg-blue-600 z-50"
-          size="icon"
-        >
-          <MessageCircle className="h-6 w-6" />
-        </Button>
+        <div className="fixed bottom-6 right-6 z-50 flex items-center space-x-3">
+          {/* Inscription / label (visible on mobile) */}
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white text-sm font-medium shadow text-gray-800 max-w-[60%] truncate">
+            <span className="h-2 w-2 bg-emerald-400 rounded-full animate-pulse inline-block" />
+            <span className="truncate">Chat</span>
+          </span>
+
+          <Button
+            onClick={() => setIsOpen(true)}
+            className="h-14 w-14 rounded-full shadow-lg bg-cloud-blue hover:bg-blue-600"
+            size="icon"
+          >
+            <MessageCircle className="h-6 w-6" />
+          </Button>
+        </div>
       )}
 
       {/* Chat Window */}
@@ -148,9 +156,16 @@ const ChatBot = () => {
         <div className="fixed bottom-4 right-4 left-4 md:left-auto md:right-6 md:w-96 h-[500px] max-h-[80vh] bg-white rounded-lg shadow-2xl flex flex-col z-50 border border-gray-200">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b bg-cloud-blue text-white rounded-t-lg">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <MessageCircle className="h-5 w-5" />
-              <h3 className="font-semibold">Chat with us</h3>
+              <div className="flex items-center gap-2">
+                <h3 className="font-semibold">Chat with us</h3>
+                {/* Live badge */}
+                <span className="inline-flex items-center gap-2 bg-white/10 text-white text-xs px-2 py-0.5 rounded-full">
+                  <span className="h-2 w-2 bg-emerald-400 rounded-full animate-pulse inline-block" />
+                  <span className="font-medium">Live</span>
+                </span>
+              </div>
             </div>
             <Button
               variant="ghost"
