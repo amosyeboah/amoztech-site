@@ -37,7 +37,7 @@ const FAQ = () => {
       faqs: [
         {
           question: "How much does amozTech cost?",
-          answer: "We offer flexible pricing plans starting from $29/month for small businesses. Plans include different features and user limits. Check our pricing page for detailed information on all available plans."
+          answer: "We offer flexible pricing plans starting from ₵50/month for small businesses. Plans include different features and user limits. Check our pricing page for detailed information on all available plans."
         },
         {
           question: "Is there a free trial?",
@@ -60,13 +60,10 @@ const FAQ = () => {
           question: "Can I manage inventory across multiple locations?",
           answer: "Yes! amozTech supports multi-location inventory management. Track stock levels, transfer products between locations, and get consolidated reporting across all your stores from a single dashboard."
         },
-        {
-          question: "Does amozTech work offline?",
-          answer: "Yes, amozTech has robust offline functionality. You can continue processing sales, managing inventory, and accessing customer data even without internet. All data syncs automatically when connection is restored."
-        },
+
         {
           question: "What payment methods are supported?",
-          answer: "We support all major payment methods including credit/debit cards, contactless payments, mobile wallets (Apple Pay, Google Pay), gift cards, and cash. EMV chip and PIN transactions are fully supported."
+          answer: "We support all major payment methods including credit/debit cards, contactless payments, mobile wallets and cash. Our system is PCI compliant to ensure secure transactions."
         },
         {
           question: "Can I customize receipts and invoices?",
@@ -89,10 +86,7 @@ const FAQ = () => {
           question: "Is my data secure?",
           answer: "Absolutely! We use bank-level encryption, secure data centers, and comply with PCI DSS standards. All payment data is tokenized and never stored on your devices. Regular security audits ensure your data stays protected."
         },
-        {
-          question: "Can I integrate with other software?",
-          answer: "Yes! amozTech integrates with popular accounting software (QuickBooks, Xero), e-commerce platforms (Shopify, WooCommerce), and marketing tools. Our API allows custom integrations for specific business needs."
-        }
+        
       ]
     },
     {
@@ -250,7 +244,7 @@ const FAQ = () => {
                 </div>
                 <h3 className="font-semibold">Call Support</h3>
                 <p className="text-sm text-muted-foreground">Speak directly with our experts</p>
-                <Button variant="outline" className="w-full">+1 (555) 123-4567</Button>
+                <Button variant="outline" className="w-full">0240-85-70-85</Button>
               </CardContent>
             </Card>
             

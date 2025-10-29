@@ -25,7 +25,7 @@ const PricingPage = () => {
               <div className="p-8">
                 <h3 className="text-xl font-semibold text-gray-800 mb-4">Basic</h3>
                 <div className="mb-6">
-                  <span className="text-4xl font-bold">$9</span>
+                  <span className="text-4xl font-bold">₵50</span>
                   <span className="text-gray-600">/month</span>
                 </div>
                 <p className="text-gray-600 mb-6">Perfect for small businesses just getting started</p>
@@ -74,7 +74,7 @@ const PricingPage = () => {
               <div className="p-8">
                 <h3 className="text-xl font-semibold text-gray-800 mb-4">Standard</h3>
                 <div className="mb-6">
-                  <span className="text-4xl font-bold">$29</span>
+                  <span className="text-4xl font-bold">₵105</span>
                   <span className="text-gray-600">/month</span>
                 </div>
                 <p className="text-gray-600 mb-6">Ideal for growing businesses with more needs</p>
@@ -126,7 +126,7 @@ const PricingPage = () => {
               <div className="p-8">
                 <h3 className="text-xl font-semibold text-gray-800 mb-4">Premium</h3>
                 <div className="mb-6">
-                  <span className="text-4xl font-bold">$49</span>
+                  <span className="text-4xl font-bold">₵250</span>
                   <span className="text-gray-600">/month</span>
                 </div>
                 <p className="text-gray-600 mb-6">For established businesses with complex needs</p>

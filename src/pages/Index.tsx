@@ -392,7 +392,7 @@ const Index = () => {
                 "The invoicing system is a game-changer. We've reduced our billing time by 75% and improved cash flow significantly."
               </p>
               <div>
-                <p className="font-semibold text-gray-800">Michael Chen</p>
+                <p className="font-semibold text-gray-800">Michael Asamoah</p>
                 <p className="text-gray-500 text-sm">Owner, Tech Solutions</p>
               </div>
             </div>
@@ -409,7 +409,7 @@ const Index = () => {
                 "As a supermarket owner, I needed a system that could handle both front and back-of-house operations. amozTech POS does it all seamlessly."
               </p>
               <div>
-                <p className="font-semibold text-gray-800">Elena Rodriguez</p>
+                <p className="font-semibold text-gray-800">Hannah Osei</p>
                 <p className="text-gray-500 text-sm">Owner, Fusion Supermarket</p>
               </div>
             </div>
