@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import logo from '@/assets/amoztech-logo.png';
+import { Phone } from 'lucide-react';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -38,6 +39,17 @@ const Navbar = () => {
           <Link to="/contact" className="text-gray-700 font-medium hover:text-cloud-blue transition-colors">
             Contact us
           </Link>
+          <Button asChild className="bg-emerald-500 hover:bg-emerald-600 text-white">
+            <a
+              href="https://wa.me/233240857085?text=Hello%20amozTech%20Support"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 px-3 py-1"
+            >
+              <Phone size={16} />
+              <span>WhatsApp</span>
+            </a>
+          </Button>
           <Link to="/login" className="text-gray-700 font-medium hover:text-cloud-blue transition-colors">
             Login
           </Link>
