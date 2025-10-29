@@ -10,8 +10,17 @@ interface Message {
   content: string;
 }
 
-const ChatBot = () => {
+interface ChatBotProps {
+  onClose?: () => void;
+}
+
+const ChatBot = ({ onClose }: ChatBotProps = {}) => {
   const [isOpen, setIsOpen] = useState(false);
+  
+  const handleClose = () => {
+    setIsOpen(false);
+    onClose?.();
+  };
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -170,7 +179,7 @@ const ChatBot = () => {
             <Button
               variant="ghost"
               size="icon"
-              onClick={() => setIsOpen(false)}
+              onClick={handleClose}
               className="h-8 w-8 text-white hover:bg-blue-700"
             >
               <X className="h-4 w-4" />
