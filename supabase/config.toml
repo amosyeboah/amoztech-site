@@ -2,3 +2,9 @@ project_id = "hulfjcuqjxyfoqcrcief"
 
 [functions.chat]
 verify_jwt = false
+
+[functions.paystack-initialize]
+verify_jwt = true
+
+[functions.paystack-verify]
+verify_jwt = true
