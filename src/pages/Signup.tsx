@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
@@ -8,23 +8,15 @@ import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
-const LoginPage = () => {
+const Signup = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
+    confirmPassword: '',
   });
-
-  useEffect(() => {
-    // Check if user is already logged in
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      if (user) {
-        navigate('/');
-      }
-    });
-  }, [navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -33,28 +25,50 @@ const LoginPage = () => {
     });
   };
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (formData.password !== formData.confirmPassword) {
+      toast({
+        title: 'Error',
+        description: 'Passwords do not match',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (formData.password.length < 6) {
+      toast({
+        title: 'Error',
+        description: 'Password must be at least 6 characters',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signUp({
         email: formData.email,
         password: formData.password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/`,
+        },
       });
 
       if (error) throw error;
 
       toast({
         title: 'Success!',
-        description: 'Logged in successfully',
+        description: 'Account created successfully. You can now login.',
       });
 
-      navigate('/');
+      navigate('/login');
     } catch (error: any) {
       toast({
-        title: 'Login Failed',
-        description: error.message || 'Invalid email or password',
+        title: 'Signup Failed',
+        description: error.message || 'An error occurred during signup',
         variant: 'destructive',
       });
     } finally {
@@ -70,17 +84,17 @@ const LoginPage = () => {
         <div className="max-w-md w-full space-y-8">
           <div>
             <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
-              Sign in to your account
+              Create your account
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
-              Don't have an account?{' '}
-              <Link to="/signup" className="font-medium text-primary hover:underline">
-                Sign up
+              Already have an account?{' '}
+              <Link to="/login" className="font-medium text-primary hover:underline">
+                Sign in
               </Link>
             </p>
           </div>
 
-          <form className="mt-8 space-y-6 bg-white p-8 rounded-lg shadow-md" onSubmit={handleLogin}>
+          <form className="mt-8 space-y-6 bg-white p-8 rounded-lg shadow-md" onSubmit={handleSignup}>
             <div className="space-y-4">
               <div>
                 <Label htmlFor="email">Email address</Label>
@@ -103,9 +117,24 @@ const LoginPage = () => {
                   id="password"
                   name="password"
                   type="password"
-                  autoComplete="current-password"
+                  autoComplete="new-password"
                   required
                   value={formData.password}
+                  onChange={handleChange}
+                  className="mt-1"
+                  placeholder="••••••••"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  value={formData.confirmPassword}
                   onChange={handleChange}
                   className="mt-1"
                   placeholder="••••••••"
@@ -118,7 +147,7 @@ const LoginPage = () => {
               className="w-full"
               disabled={loading}
             >
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? 'Creating account...' : 'Sign up'}
             </Button>
           </form>
         </div>
@@ -129,4 +158,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default Signup;
