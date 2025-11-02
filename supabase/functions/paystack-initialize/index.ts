@@ -66,8 +66,8 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         email,
-        amount: plan.amount, // Amount in kobo
-        currency: 'NGN',
+        amount: plan.amount, // Amount in pesewas (GHS smallest unit)
+        currency: 'GHS',
         metadata: {
           user_id: user.id,
           plan_id: planId,
