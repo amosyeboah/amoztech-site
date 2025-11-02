@@ -140,7 +140,7 @@ const PricingPage = () => {
                   
                   <div className="mb-6">
                     <span className={`text-4xl font-bold ${isPopular ? '' : 'text-gray-900'}`}>
-                      ₦{(plan.amount / 100).toLocaleString()}
+                      ₵{(plan.amount / 100).toLocaleString()}
                     </span>
                     <span className={isPopular ? 'text-white/80' : 'text-gray-600'}>
                       /{plan.interval}
