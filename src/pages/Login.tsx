@@ -12,6 +12,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -62,6 +63,34 @@ const LoginPage = () => {
     }
   };
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(formData.email, {
+        redirectTo: `${window.location.origin}/login`,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Check your email',
+        description: 'Password reset link has been sent to your email',
+      });
+
+      setShowForgotPassword(false);
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to send reset email',
+        variant: 'destructive',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -70,17 +99,32 @@ const LoginPage = () => {
         <div className="max-w-md w-full space-y-8">
           <div>
             <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
-              Sign in to your account
+              {showForgotPassword ? 'Reset your password' : 'Sign in to your account'}
             </h2>
             <p className="mt-2 text-center text-sm text-gray-600">
-              Don't have an account?{' '}
-              <Link to="/signup" className="font-medium text-primary hover:underline">
-                Sign up
-              </Link>
+              {showForgotPassword ? (
+                <button
+                  type="button"
+                  onClick={() => setShowForgotPassword(false)}
+                  className="font-medium text-primary hover:underline"
+                >
+                  Back to sign in
+                </button>
+              ) : (
+                <>
+                  Don't have an account?{' '}
+                  <Link to="/signup" className="font-medium text-primary hover:underline">
+                    Sign up
+                  </Link>
+                </>
+              )}
             </p>
           </div>
 
-          <form className="mt-8 space-y-6 bg-white p-8 rounded-lg shadow-md" onSubmit={handleLogin}>
+          <form 
+            className="mt-8 space-y-6 bg-white p-8 rounded-lg shadow-md" 
+            onSubmit={showForgotPassword ? handleForgotPassword : handleLogin}
+          >
             <div className="space-y-4">
               <div>
                 <Label htmlFor="email">Email address</Label>
@@ -97,20 +141,31 @@ const LoginPage = () => {
                 />
               </div>
 
-              <div>
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                  className="mt-1"
-                  placeholder="••••••••"
-                />
-              </div>
+              {!showForgotPassword && (
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <Label htmlFor="password">Password</Label>
+                    <button
+                      type="button"
+                      onClick={() => setShowForgotPassword(true)}
+                      className="text-sm text-primary hover:underline"
+                    >
+                      Forgot password?
+                    </button>
+                  </div>
+                  <Input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autoComplete="current-password"
+                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                    className="mt-1"
+                    placeholder="••••••••"
+                  />
+                </div>
+              )}
             </div>
 
             <Button
@@ -118,7 +173,10 @@ const LoginPage = () => {
               className="w-full"
               disabled={loading}
             >
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading 
+                ? (showForgotPassword ? 'Sending...' : 'Signing in...') 
+                : (showForgotPassword ? 'Send reset link' : 'Sign in')
+              }
             </Button>
           </form>
         </div>
