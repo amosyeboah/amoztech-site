@@ -1,12 +1,47 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Menu, X, Phone, LogOut, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import logo from '@/assets/amoztech-logo.png';
-import { Phone } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<any>(null);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Get current user
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await supabase.auth.signOut();
+      toast({
+        title: 'Signed out',
+        description: 'You have been signed out successfully',
+      });
+      navigate('/');
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to sign out',
+        variant: 'destructive',
+      });
+    }
+  };
 
   return (
     <header className="w-full py-4 px-6 md:px-10">
@@ -50,12 +85,31 @@ const Navbar = () => {
               <span>WhatsApp</span>
             </a>
           </Button>
-          <Link to="/login" className="text-gray-700 font-medium hover:text-cloud-blue transition-colors">
-            Login
-          </Link>
-          <Button asChild className="bg-cloud-blue hover:bg-blue-600 text-white">
-            <Link to="/pricing">Try For Free</Link>
-          </Button>
+          {user ? (
+            <>
+              <div className="flex items-center space-x-2 text-gray-700">
+                <User size={16} />
+                <span className="text-sm font-medium truncate max-w-[150px]">{user.email}</span>
+              </div>
+              <Button
+                onClick={handleSignOut}
+                variant="outline"
+                className="flex items-center space-x-2"
+              >
+                <LogOut size={16} />
+                <span>Sign Out</span>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="text-gray-700 font-medium hover:text-cloud-blue transition-colors">
+                Login
+              </Link>
+              <Button asChild className="bg-cloud-blue hover:bg-blue-600 text-white">
+                <Link to="/pricing">Try For Free</Link>
+              </Button>
+            </>
+          )}
         </nav>
 
         {/* Mobile Menu Button */}
@@ -107,16 +161,38 @@ const Navbar = () => {
           >
             Contact us
           </Link>
-          <Link
-            to="/login"
-            className="text-gray-700 font-medium hover:text-cloud-blue transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Login
-          </Link>
-          <Button asChild className="bg-cloud-blue hover:bg-blue-600 text-white w-full">
-            <Link to="/pricing" onClick={() => setIsMenuOpen(false)}>Try For Free</Link>
-          </Button>
+          {user ? (
+            <>
+              <div className="flex items-center space-x-2 text-gray-700 py-2">
+                <User size={16} />
+                <span className="text-sm font-medium truncate">{user.email}</span>
+              </div>
+              <Button
+                onClick={() => {
+                  handleSignOut();
+                  setIsMenuOpen(false);
+                }}
+                variant="outline"
+                className="w-full flex items-center justify-center space-x-2"
+              >
+                <LogOut size={16} />
+                <span>Sign Out</span>
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="text-gray-700 font-medium hover:text-cloud-blue transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Login
+              </Link>
+              <Button asChild className="bg-cloud-blue hover:bg-blue-600 text-white w-full">
+                <Link to="/pricing" onClick={() => setIsMenuOpen(false)}>Try For Free</Link>
+              </Button>
+            </>
+          )}
         </nav>
       )}
     </header>
