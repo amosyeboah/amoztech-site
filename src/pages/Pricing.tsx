@@ -6,6 +6,9 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { z } from 'zod';
+
+const paymentReferenceSchema = z.string().regex(/^[a-zA-Z0-9_-]+$/, 'Invalid payment reference format');
 
 const PricingPage = () => {
   const { toast } = useToast();
@@ -39,7 +42,17 @@ const PricingPage = () => {
     const verify = searchParams.get('verify');
     const reference = searchParams.get('reference');
     if (verify === 'true' && reference) {
-      verifyPayment(reference);
+      // Validate reference format before processing
+      const validation = paymentReferenceSchema.safeParse(reference);
+      if (validation.success) {
+        verifyPayment(reference);
+      } else {
+        toast({
+          title: 'Invalid Payment Reference',
+          description: 'The payment reference in the URL is invalid.',
+          variant: 'destructive',
+        });
+      }
     }
   }, [searchParams]);
 
@@ -74,6 +87,19 @@ const PricingPage = () => {
         variant: 'destructive',
       });
       navigate('/login');
+      return;
+    }
+
+    // Validate planId is a valid UUID
+    const uuidSchema = z.string().uuid('Invalid plan ID');
+    const validation = uuidSchema.safeParse(planId);
+    
+    if (!validation.success) {
+      toast({
+        title: 'Error',
+        description: 'Invalid plan selection',
+        variant: 'destructive',
+      });
       return;
     }
 

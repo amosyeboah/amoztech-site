@@ -1,4 +1,3 @@
-
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -6,6 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { toast } from "sonner";
+import { z } from "zod";
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
+  email: z.string().trim().email('Invalid email address').max(255, 'Email must be less than 255 characters'),
+  company: z.string().trim().max(100, 'Company name must be less than 100 characters'),
+  message: z.string().trim().min(1, 'Message is required').max(1000, 'Message must be less than 1000 characters')
+});
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -22,7 +29,17 @@ const ContactPage = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Your message has been sent! We'll get back to you soon.");
+    
+    // Validate input with zod
+    const validation = contactSchema.safeParse(formData);
+    
+    if (!validation.success) {
+      const firstError = validation.error.errors[0];
+      toast.error(firstError.message);
+      return;
+    }
+    
+    toast.info("Contact form is for demonstration purposes only. Please email support@amoztech.com directly.");
     setFormData({
       name: "",
       email: "",
@@ -58,6 +75,7 @@ const ContactPage = () => {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="John Doe"
+                      maxLength={100}
                       required
                     />
                   </div>
@@ -72,6 +90,7 @@ const ContactPage = () => {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="john@example.com"
+                      maxLength={255}
                       required
                     />
                   </div>
@@ -85,6 +104,7 @@ const ContactPage = () => {
                       value={formData.company}
                       onChange={handleChange}
                       placeholder="Your Company Ltd."
+                      maxLength={100}
                     />
                   </div>
                   <div>
@@ -98,6 +118,7 @@ const ContactPage = () => {
                       onChange={handleChange}
                       placeholder="How can we help you?"
                       rows={5}
+                      maxLength={1000}
                       required
                     />
                   </div>

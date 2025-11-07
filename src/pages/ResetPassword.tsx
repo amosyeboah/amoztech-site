@@ -7,6 +7,20 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { z } from 'zod';
+
+const resetPasswordSchema = z.object({
+  password: z.string()
+    .min(8, 'Password must be at least 8 characters')
+    .max(128, 'Password must be less than 128 characters')
+    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+    .regex(/[0-9]/, 'Password must contain at least one number'),
+  confirmPassword: z.string()
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ['confirmPassword']
+});
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -51,19 +65,14 @@ const ResetPassword = () => {
   const handleResetPassword = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (password !== confirmPassword) {
+    // Validate input with zod
+    const validation = resetPasswordSchema.safeParse({ password, confirmPassword });
+    
+    if (!validation.success) {
+      const firstError = validation.error.errors[0];
       toast({
-        title: 'Passwords do not match',
-        description: 'Please make sure both passwords are the same',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    if (password.length < 6) {
-      toast({
-        title: 'Password too short',
-        description: 'Password must be at least 6 characters',
+        title: 'Validation Error',
+        description: firstError.message,
         variant: 'destructive',
       });
       return;
