@@ -79,6 +79,55 @@ const PricingPage = () => {
     }
   };
 
+  const handleFreeTrial = async (planId: string) => {
+    if (!user) {
+      toast({
+        title: 'Login Required',
+        description: 'Please login to start your free trial.',
+        variant: 'destructive',
+      });
+      navigate('/login');
+      return;
+    }
+
+    // Validate planId is a valid UUID
+    const uuidSchema = z.string().uuid('Invalid plan ID');
+    const validation = uuidSchema.safeParse(planId);
+    
+    if (!validation.success) {
+      toast({
+        title: 'Error',
+        description: 'Invalid plan selection',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    setLoading(`trial-${planId}`);
+    try {
+      const { data, error } = await supabase.functions.invoke('activate-free-trial', {
+        body: { planId },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: 'Free Trial Activated!',
+        description: 'Enjoy your 1-month free trial. No payment required.',
+      });
+      
+      // Reload to update UI
+      window.location.reload();
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message || 'Failed to activate free trial',
+        variant: 'destructive',
+      });
+      setLoading(null);
+    }
+  };
+
   const handleSubscribe = async (planId: string) => {
     if (!user) {
       toast({
@@ -177,15 +226,28 @@ const PricingPage = () => {
                     {plan.description}
                   </p>
                   
-                  <Button
-                    className={`w-full mb-6 ${
-                      isPopular ? 'bg-white text-primary hover:bg-white/90' : ''
-                    }`}
-                    onClick={() => handleSubscribe(plan.id)}
-                    disabled={loading === plan.id}
-                  >
-                    {loading === plan.id ? 'Processing...' : 'Subscribe Now'}
-                  </Button>
+                  <div className="space-y-3 mb-6">
+                    <Button
+                      className={`w-full ${
+                        isPopular ? 'bg-white text-primary hover:bg-white/90' : ''
+                      }`}
+                      onClick={() => handleFreeTrial(plan.id)}
+                      disabled={loading === `trial-${plan.id}` || loading === plan.id}
+                    >
+                      {loading === `trial-${plan.id}` ? 'Activating...' : 'Start 1-Month Free Trial'}
+                    </Button>
+                    
+                    <Button
+                      variant="outline"
+                      className={`w-full ${
+                        isPopular ? 'border-white text-white hover:bg-white/10' : ''
+                      }`}
+                      onClick={() => handleSubscribe(plan.id)}
+                      disabled={loading === plan.id || loading === `trial-${plan.id}`}
+                    >
+                      {loading === plan.id ? 'Processing...' : 'Subscribe Now'}
+                    </Button>
+                  </div>
                   
                   <ul className="space-y-4 flex-1">
                     {features.map((feature: string, idx: number) => (
