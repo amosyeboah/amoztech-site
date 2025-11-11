@@ -227,15 +227,17 @@ const PricingPage = () => {
                   </p>
                   
                   <div className="space-y-3 mb-6">
-                    <Button
-                      className={`w-full ${
-                        isPopular ? 'bg-white text-primary hover:bg-white/90' : ''
-                      }`}
-                      onClick={() => handleFreeTrial(plan.id)}
-                      disabled={loading === `trial-${plan.id}` || loading === plan.id}
-                    >
-                      {loading === `trial-${plan.id}` ? 'Activating...' : 'Start 1-Month Free Trial'}
-                    </Button>
+                    {index === 0 && (
+                      <Button
+                        className={`w-full ${
+                          isPopular ? 'bg-white text-primary hover:bg-white/90' : ''
+                        }`}
+                        onClick={() => handleFreeTrial(plan.id)}
+                        disabled={loading === `trial-${plan.id}` || loading === plan.id}
+                      >
+                        {loading === `trial-${plan.id}` ? 'Activating...' : 'Start 1-Month Free Trial'}
+                      </Button>
+                    )}
                     
                     <Button
                       variant="outline"
