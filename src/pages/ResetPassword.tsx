@@ -28,17 +28,24 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [isValidSession, setIsValidSession] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
 
   useEffect(() => {
+    let sessionCheckTimeout: NodeJS.Timeout;
+
     // Listen for password recovery event
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         if (event === 'PASSWORD_RECOVERY') {
           // User has clicked the reset link and has a valid session
-          console.log('Password recovery session established');
-        } else if (event === 'SIGNED_OUT' || !session) {
+          setIsValidSession(true);
+          setCheckingSession(false);
+        } else if (event === 'SIGNED_OUT') {
+          setIsValidSession(false);
+          setCheckingSession(false);
           toast({
-            title: 'Invalid or expired link',
+            title: 'Session expired',
             description: 'Please request a new password reset link',
             variant: 'destructive',
           });
@@ -47,9 +54,13 @@ const ResetPassword = () => {
       }
     );
 
-    // Also check current session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) {
+    // Give Supabase time to process the recovery token from URL hash
+    sessionCheckTimeout = setTimeout(async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session) {
+        setIsValidSession(true);
+      } else {
         toast({
           title: 'Invalid or expired link',
           description: 'Please request a new password reset link',
@@ -57,9 +68,13 @@ const ResetPassword = () => {
         });
         navigate('/login');
       }
-    });
+      setCheckingSession(false);
+    }, 1000); // Wait 1 second for token processing
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(sessionCheckTimeout);
+    };
   }, [navigate, toast]);
 
   const handleResetPassword = async (e: React.FormEvent) => {
@@ -103,6 +118,25 @@ const ResetPassword = () => {
       setLoading(false);
     }
   };
+
+  if (checkingSession) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Navbar />
+        <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-blue-50 to-white">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-gray-600">Verifying reset link...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (!isValidSession) {
+    return null; // Will redirect to login
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
