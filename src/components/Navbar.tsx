@@ -5,10 +5,12 @@ import { Button } from '@/components/ui/button';
 import logo from '@/assets/amoztech-logo.png';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -23,7 +25,16 @@ const Navbar = () => {
       setUser(session?.user ?? null);
     });
 
-    return () => subscription.unsubscribe();
+    // Handle scroll effect
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      subscription.unsubscribe();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const handleSignOut = async () => {
@@ -43,80 +54,93 @@ const Navbar = () => {
     }
   };
 
+  const navLinks = [
+    { to: '/', label: 'Home' },
+    { to: '/blog', label: 'Blog' },
+    { to: '/faq', label: 'FAQ' },
+    { to: '/pricing', label: 'Pricing' },
+    { to: '/contact', label: 'Contact' },
+  ];
+
   return (
-    <header className="w-full py-4 px-6 md:px-10">
-      <div className="flex items-center justify-between">
-        {/* Logo */}
-        <div className="flex items-center">
-          <Link to="/" className="flex items-center">
-            <img src={logo} alt="AmozTech Logo" className="h-16 w-auto mr-3" />
+    <motion.header 
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
+      className={`w-full py-4 px-6 md:px-10 sticky top-0 z-50 transition-all duration-300 ${
+        scrolled ? 'glass shadow-soft' : 'bg-transparent'
+      }`}
+    >
+      <div className="container mx-auto">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex items-center group">
+            <img src={logo} alt="AmozTech Logo" className="h-12 w-auto mr-3 transition-transform duration-300 group-hover:scale-105" />
             <div>
-              <span className="text-2xl font-bold logo-text">amozTech</span>
-              <p className="text-xs text-gray-500 font-medium">THE POWER OF NOW</p>
+              <span className="text-xl font-bold logo-text">amozTech</span>
+              <p className="text-[10px] text-muted-foreground font-medium tracking-wider">THE POWER OF NOW</p>
             </div>
           </Link>
-        </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="text-gray-700 font-medium hover:text-cloud-blue transition-colors">
-            Home
-          </Link>
-          <Link to="/blog" className="text-gray-700 font-medium hover:text-cloud-blue transition-colors">
-            Blog
-          </Link>
-          <Link to="/faq" className="text-gray-700 font-medium hover:text-cloud-blue transition-colors">
-            FAQ
-          </Link>
-          <Link to="/pricing" className="text-gray-700 font-medium hover:text-cloud-blue transition-colors">
-            Pricing
-          </Link>
-          <Link to="/contact" className="text-gray-700 font-medium hover:text-cloud-blue transition-colors">
-            Contact us
-          </Link>
-          <Button asChild className="bg-emerald-500 hover:bg-emerald-600 text-white">
-            <a
-              href="https://wa.me/233240857085?text=Hello%20amozTech%20Support"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center space-x-2 px-3 py-1"
-            >
-              <Phone size={16} />
-              <span>WhatsApp</span>
-            </a>
-          </Button>
-          {user ? (
-            <>
-              <div className="flex items-center space-x-2 text-gray-700">
-                <User size={16} />
-                <span className="text-sm font-medium truncate max-w-[150px]">{user.email}</span>
-              </div>
-              <Button
-                onClick={handleSignOut}
-                variant="outline"
-                className="flex items-center space-x-2"
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className="px-4 py-2 text-muted-foreground font-medium hover:text-foreground rounded-lg hover:bg-secondary/50 transition-all duration-200"
               >
-                <LogOut size={16} />
-                <span>Sign Out</span>
-              </Button>
-            </>
-          ) : (
-            <>
-              <Link to="/login" className="text-gray-700 font-medium hover:text-cloud-blue transition-colors">
-                Login
+                {link.label}
               </Link>
-              <Button asChild className="bg-cloud-blue hover:bg-blue-600 text-white">
-                <Link to="/pricing">Try For Free</Link>
-              </Button>
-            </>
-          )}
-        </nav>
+            ))}
+          </nav>
 
-        {/* Mobile Menu Button */}
-        <div className="md:hidden">
+          {/* Desktop Actions */}
+          <div className="hidden lg:flex items-center gap-3">
+            <Button asChild variant="ghost" size="sm" className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50">
+              <a
+                href="https://wa.me/233240857085?text=Hello%20amozTech%20Support"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2"
+              >
+                <Phone size={16} />
+                <span>WhatsApp</span>
+              </a>
+            </Button>
+            
+            {user ? (
+              <>
+                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary">
+                  <User size={16} className="text-muted-foreground" />
+                  <span className="text-sm font-medium truncate max-w-[120px]">{user.email}</span>
+                </div>
+                <Button
+                  onClick={handleSignOut}
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
+                  <LogOut size={16} />
+                  <span>Sign Out</span>
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button asChild variant="ghost" size="sm">
+                  <Link to="/login">Login</Link>
+                </Button>
+                <Button asChild size="sm" className="gradient-bg text-primary-foreground rounded-xl shadow-soft hover:shadow-glow transition-all duration-300">
+                  <Link to="/pricing">Try For Free</Link>
+                </Button>
+              </>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="text-gray-700 hover:text-cloud-blue focus:outline-none"
+            className="lg:hidden p-2 rounded-lg hover:bg-secondary transition-colors"
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -124,78 +148,66 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <nav className="mt-4 flex flex-col space-y-4 md:hidden">
-          <Link
-            to="/"
-            className="text-gray-700 font-medium hover:text-cloud-blue transition-colors"
-            onClick={() => setIsMenuOpen(false)}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.nav
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="lg:hidden mt-4 overflow-hidden"
           >
-            Home
-          </Link>
-          <Link
-            to="/blog"
-            className="text-gray-700 font-medium hover:text-cloud-blue transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Blog
-          </Link>
-          <Link
-            to="/faq"
-            className="text-gray-700 font-medium hover:text-cloud-blue transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            FAQ
-          </Link>
-          <Link
-            to="/pricing"
-            className="text-gray-700 font-medium hover:text-cloud-blue transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Pricing
-          </Link>
-          <Link
-            to="/contact"
-            className="text-gray-700 font-medium hover:text-cloud-blue transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Contact us
-          </Link>
-          {user ? (
-            <>
-              <div className="flex items-center space-x-2 text-gray-700 py-2">
-                <User size={16} />
-                <span className="text-sm font-medium truncate">{user.email}</span>
+            <div className="glass-card rounded-2xl p-4 space-y-2">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="block px-4 py-3 text-foreground font-medium hover:bg-secondary rounded-xl transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              
+              <div className="pt-4 border-t border-border space-y-2">
+                {user ? (
+                  <>
+                    <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-secondary">
+                      <User size={16} className="text-muted-foreground" />
+                      <span className="text-sm font-medium truncate">{user.email}</span>
+                    </div>
+                    <Button
+                      onClick={() => {
+                        handleSignOut();
+                        setIsMenuOpen(false);
+                      }}
+                      variant="outline"
+                      className="w-full flex items-center justify-center gap-2"
+                    >
+                      <LogOut size={16} />
+                      <span>Sign Out</span>
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      className="block px-4 py-3 text-center text-foreground font-medium hover:bg-secondary rounded-xl transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Login
+                    </Link>
+                    <Button asChild className="w-full gradient-bg text-primary-foreground rounded-xl">
+                      <Link to="/pricing" onClick={() => setIsMenuOpen(false)}>Try For Free</Link>
+                    </Button>
+                  </>
+                )}
               </div>
-              <Button
-                onClick={() => {
-                  handleSignOut();
-                  setIsMenuOpen(false);
-                }}
-                variant="outline"
-                className="w-full flex items-center justify-center space-x-2"
-              >
-                <LogOut size={16} />
-                <span>Sign Out</span>
-              </Button>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                className="text-gray-700 font-medium hover:text-cloud-blue transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Login
-              </Link>
-              <Button asChild className="bg-cloud-blue hover:bg-blue-600 text-white w-full">
-                <Link to="/pricing" onClick={() => setIsMenuOpen(false)}>Try For Free</Link>
-              </Button>
-            </>
-          )}
-        </nav>
-      )}
-    </header>
+            </div>
+          </motion.nav>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 };
 
