@@ -2,440 +2,518 @@ import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BarChart2, Database, Shield, Users, Clock, BoxIcon, Globe, Calculator } from "lucide-react";
+import { ArrowRight, BarChart2, Database, Shield, Users, Check, Zap, Globe, TrendingUp, Box, FileText, PieChart } from "lucide-react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
 const Index = () => {
   const features = [
     {
       title: "Point of Sale",
-      description: "Streamlined checkout process with easy inventory management and barcode scanning.",
+      description: "Streamlined checkout with barcode scanning and multiple payment options.",
       icon: BarChart2,
+      color: "from-blue-500 to-blue-600",
     },
     {
       title: "Invoicing & Billing",
-      description: "Create professional invoices, track payments, and manage your financial transactions easily.",
-      icon: Database,
+      description: "Create professional invoices and track payments effortlessly.",
+      icon: FileText,
+      color: "from-purple-500 to-purple-600",
     },
     {
       title: "Inventory Management",
-      description: "Track stock levels, automate reordering, and prevent stockouts with real-time updates.",
-      icon: Shield,
+      description: "Real-time stock tracking with automated low-stock alerts.",
+      icon: Box,
+      color: "from-emerald-500 to-emerald-600",
     },
     {
       title: "Customer Management",
-      description: "Build stronger relationships with customer profiles, purchase history, and loyalty programs.",
+      description: "Build relationships with profiles, history, and loyalty programs.",
       icon: Users,
+      color: "from-orange-500 to-orange-600",
     },
   ];
 
+  const steps = [
+    { number: "01", title: "Sign Up", description: "Create a free trial account. No credit card required." },
+    { number: "02", title: "Setup Store", description: "Configure your business information and settings." },
+    { number: "03", title: "Start Selling", description: "Begin processing transactions and tracking performance." },
+  ];
+
+  const businessTypes = [
+    {
+      title: "Retail POS Software",
+      description: "Grocery Store, Supermarket, Convenience Store, Department Store, General Store",
+      image: "/images/retail-pos-software.jpg",
+    },
+    {
+      title: "Food & Drink",
+      description: "Restaurant, Cafe, Fast Food, Bakery, Food Truck, Bar & Lounge",
+      image: "/images/restaurant-management-software.jpg",
+    },
+    {
+      title: "Pharma & Healthcare",
+      description: "Pharmacy, Medical Shop, Chemists, Drugstore, Wellness Center",
+      image: "/images/pharmacy-pos-billing-software.jpg",
+    },
+  ];
+
+  const stats = [
+    { value: "500+", label: "Active Businesses" },
+    { value: "99.9%", label: "Uptime" },
+    { value: "50K+", label: "Transactions Daily" },
+    { value: "24/7", label: "Support" },
+  ];
+
+  const testimonials = [
+    {
+      quote: "amozTech POS has completely transformed how we manage our retail business. The inventory tracking alone has saved us thousands.",
+      author: "Sarah Johnson",
+      role: "CEO, Fashion Boutique",
+      avatar: "SJ",
+    },
+    {
+      quote: "The invoicing system is a game-changer. We've reduced our billing time by 75% and improved cash flow significantly.",
+      author: "Michael Asamoah",
+      role: "Owner, Tech Solutions",
+      avatar: "MA",
+    },
+    {
+      quote: "As a supermarket owner, I needed a system that could handle both front and back-of-house operations. amozTech does it all.",
+      author: "Hannah Osei",
+      role: "Owner, Fusion Supermarket",
+      avatar: "HO",
+    },
+  ];
+
+  const FadeInSection = ({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) => {
+    const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+    return (
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, y: 40 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay }}
+        className={className}
+      >
+        {children}
+      </motion.div>
+    );
+  };
+
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
       <Hero />
       
-      {/* Three Steps Section */}
-      <section className="py-20 px-6 bg-white">
+      {/* Stats Section */}
+      <section className="py-12 relative overflow-hidden">
+        <div className="absolute inset-0 gradient-bg opacity-5" />
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, index) => (
+              <FadeInSection key={stat.label} delay={index * 0.1}>
+                <div className="text-center">
+                  <p className="text-3xl md:text-4xl font-bold gradient-text">{stat.value}</p>
+                  <p className="text-muted-foreground text-sm mt-1">{stat.label}</p>
+                </div>
+              </FadeInSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Steps Section */}
+      <section className="py-20 px-6">
         <div className="container mx-auto">
+          <FadeInSection>
+            <div className="text-center mb-16">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+                How It Works
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Get Started in <span className="gradient-text">3 Simple Steps</span>
+              </h2>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                From sign-up to selling in minutes. No technical skills required.
+              </p>
+            </div>
+          </FadeInSection>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="h-[500px] relative overflow-hidden rounded-xl shadow-lg">
+            <FadeInSection delay={0.2}>
+              <div className="relative rounded-3xl overflow-hidden shadow-elevated">
                 <img 
                   src="/images/pos-pic.jpg" 
-                  alt="POS System" 
-                  className="w-full h-full object-cover"
-                  loading="eager"
+                  alt="POS System in action" 
+                  className="w-full h-[400px] object-cover"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
+                <div className="absolute bottom-6 left-6 right-6">
+                  <p className="text-background text-lg font-semibold">Ready to grow your business?</p>
+                  <p className="text-background/80 text-sm">Join 500+ businesses already using amozTech</p>
+                </div>
               </div>
-            </div>
-            <div className="space-y-8">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                  Start Managing Your Business in 3 Simple Steps
-                </h2>
-              </div>
+            </FadeInSection>
+
+            <div className="space-y-6">
+              {steps.map((step, index) => (
+                <FadeInSection key={step.number} delay={0.1 * (index + 1)}>
+                  <div className="flex gap-6 p-6 rounded-2xl bg-card shadow-soft hover-lift cursor-default">
+                    <div className="flex-shrink-0 w-14 h-14 rounded-2xl gradient-bg flex items-center justify-center">
+                      <span className="text-xl font-bold text-primary-foreground">{step.number}</span>
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-semibold text-foreground mb-2">{step.title}</h3>
+                      <p className="text-muted-foreground">{step.description}</p>
+                    </div>
+                  </div>
+                </FadeInSection>
+              ))}
               
-              <div className="space-y-6">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-xl font-bold text-cloud-blue">1</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Sign up</h3>
-                    <p className="text-gray-600">Sign up on a free trial account. No credit card required.</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-xl font-bold text-cloud-blue">2</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Set up Your Store Details</h3>
-                    <p className="text-gray-600">Configure your business information and customize your settings.</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                    <span className="text-xl font-bold text-cloud-blue">3</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-2">Begin Managing Your Inventory and Sales</h3>
-                    <p className="text-gray-600">Start processing transactions and tracking your business performance.</p>
-                  </div>
-                </div>
-              </div>
-              
-              <div>
-                <Button asChild size="lg" className="bg-cloud-blue hover:bg-blue-600 text-white px-8 py-3">
-                  <Link to="/pricing">Get Started Now <ArrowRight className="ml-2 w-5 h-5" /></Link>
+              <FadeInSection delay={0.4}>
+                <Button asChild size="lg" className="gradient-bg text-primary-foreground rounded-2xl shadow-glow hover:shadow-elevated transition-all duration-300 mt-4">
+                  <Link to="/pricing" className="flex items-center gap-2">
+                    Get Started Now
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
                 </Button>
-              </div>
+              </FadeInSection>
             </div>
           </div>
         </div>
       </section>
       
       {/* Features Section */}
-      <section className="py-20 px-6">
+      <section className="py-20 px-6 bg-secondary/30">
         <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              All-in-One Business Solution
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Manage every aspect of your business with our powerful yet easy-to-use platform
-            </p>
-          </div>
+          <FadeInSection>
+            <div className="text-center mb-16">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-accent/10 text-accent text-sm font-medium mb-4">
+                Features
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                All-in-One <span className="gradient-text">Business Solution</span>
+              </h2>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                Everything you need to manage and grow your business in one powerful platform.
+              </p>
+            </div>
+          </FadeInSection>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
-              <div key={index} className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
-                  <feature.icon className="w-6 h-6 text-cloud-blue" />
+              <FadeInSection key={feature.title} delay={index * 0.1}>
+                <div className="group bg-card p-8 rounded-3xl shadow-soft hover-lift cursor-default h-full">
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                    <feature.icon className="w-7 h-7 text-white" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground mb-3">{feature.title}</h3>
+                  <p className="text-muted-foreground">{feature.description}</p>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
-              </div>
+              </FadeInSection>
             ))}
           </div>
         </div>
       </section>
 
       {/* Business Types Section */}
-      <section className="py-20 px-6 bg-gray-50">
+      <section className="py-20 px-6">
         <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Smart POS Software For All Businesses
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              It is a full-featured point of sale software for all types of businesses
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {/* Retail Card */}
-            <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="h-64 relative overflow-hidden group">
-                <img 
-                  src="/images/retail-pos-software.jpg" 
-                  alt="Retail POS Software" 
-                  className="absolute inset-0 w-full h-full object-cover group-hover:animate-image-scale"
-                />
-                <div className="absolute inset-0 bg-black opacity-0 group-hover:animate-fade-in"></div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Retail POS Software</h3>
-                <p className="text-gray-600 text-sm">
-                  Grocery Store, Department Store, Supermarket, Hypermarket, Convenience Store, General Store, Fruits & Vegetables, Liquor Store, Kirana Store POS Software
-                </p>
-              </div>
-            </div>
-
-            {/* Food & Drink Card */}
-            <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="h-64 relative overflow-hidden group">
-                <img 
-                  src="/images/restaurant-management-software.jpg" 
-                  alt="Food & Drink POS" 
-                  className="absolute inset-0 w-full h-full object-cover group-hover:animate-image-scale"
-                />
-                <div className="absolute inset-0 bg-black opacity-0 group-hover:animate-fade-in"></div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Food & Drink</h3>
-                <p className="text-gray-600 text-sm">
-                  Restaurant, Cafe, Coffee Shop, Bistro, Fast Food, Food Court, Sweet Shop, Ice Cream Shop, Food Truck, Pizzeria, Bar, Restro Bar, Cake Shop, Bakery POS Software
-                </p>
-              </div>
-            </div>
-
-            {/* Pharma Card */}
-            <div className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="h-64 relative overflow-hidden group">
-                <img 
-                  src="/images/pharmacy-pos-billing-software.jpg" 
-                  alt="Pharma & Healthcare POS" 
-                  className="absolute inset-0 w-full h-full object-cover group-hover:animate-image-scale"
-                />
-                <div className="absolute inset-0 bg-black opacity-0 group-hover:animate-fade-in"></div>
-              </div>
-              <div className="p-6">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Pharma & Healthcare</h3>
-                <p className="text-gray-600 text-sm">
-                  Pharmacy, Medical shop, Health care, Chemists, Druggists, Surgical Store, Ayurvedic & Wellness, Medicine Shop POS Software
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* All-in-One POS Features */}
-      <section className="py-20 px-6 bg-white">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="order-2 lg:order-1">
-              <div className="h-[500px] relative overflow-hidden rounded-xl group">
-                <div 
-                  className="absolute inset-0 bg-[url('/images/pos-pic.jpg')] bg-cover bg-center group-hover:animate-image-scale"
-                ></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:animate-fade-in"></div>
-              </div>
-            </div>
-            <div className="order-1 lg:order-2">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                All-In-One Smart Point Of Sale Software
+          <FadeInSection>
+            <div className="text-center mb-16">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+                Industries
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Built for <span className="gradient-text">Every Business</span>
               </h2>
-              <p className="text-gray-600 mb-8">
-                No special hardware required. Turn your laptop, mobile or tablet into a powerful Point of Sale Software. Sell in a simple, orderly and fast way from any device.
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                Tailored solutions for retail, food service, healthcare, and more.
               </p>
-              <div className="space-y-4">
-                {[
-                  "Easy and User friendly point of sale",
-                  "Monitor your business from anywhere and at any time",
-                  "Sell items by serial numbers, product name and scan bar code",
-                  "Search for products by categories",
-                  "Multiple payment options",
-                  "Add new customer from POS screen",
-                  "Walk-In-Customer added automatically",
-                  "Create discount for products",
-                  "Taxes calculation"
-                ].map((feature, index) => (
-                  <div key={index} className="flex items-start">
-                    <svg className="w-5 h-5 text-cloud-blue mt-1 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span className="text-gray-600">{feature}</span>
-                  </div>
-                ))}
-              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </FadeInSection>
 
-      {/* Inventory Management Section */}
-      <section className="py-20 px-6 bg-gray-50">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h3 className="text-cloud-blue font-semibold mb-4">
-                Keep Your Inventory Always Up To Date With Smart POS System
-              </h3>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                Inventory Management
-              </h2>
-              <p className="text-gray-600 mb-8">
-                Perform simple and accurate inventory counts that help protect your investment and your business capital with updated value information in real time.
-              </p>
-              <div className="space-y-4">
-                {[
-                  "Create and edit products with images",
-                  "Import products in bulk from an excel file",
-                  "Find and edit products with a friendly and easy to use interface",
-                  "Create and manage the categories of your products",
-                  "Know the stock in real time of each store",
-                  "Automatic low stock alerts"
-                ].map((feature, index) => (
-                  <div key={index} className="flex items-start">
-                    <svg className="w-5 h-5 text-cloud-blue mt-1 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span className="text-gray-600">{feature}</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {businessTypes.map((type, index) => (
+              <FadeInSection key={type.title} delay={index * 0.15}>
+                <div className="group relative rounded-3xl overflow-hidden shadow-soft hover-lift cursor-default h-[400px]">
+                  <img 
+                    src={type.image} 
+                    alt={type.title} 
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-foreground via-foreground/40 to-transparent" />
+                  <div className="absolute bottom-0 left-0 right-0 p-8">
+                    <h3 className="text-2xl font-bold text-background mb-2">{type.title}</h3>
+                    <p className="text-background/80 text-sm">{type.description}</p>
                   </div>
-                ))}
-              </div>
-            </div>
-            <div>
-              <div className="relative">
-                <div className="h-[500px] relative overflow-hidden rounded-xl group">
-                  <div 
-                    className="absolute inset-0 bg-[url('/images/inventory-pic.jpg')] bg-cover bg-center group-hover:animate-image-scale"
-                  ></div>
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent opacity-0 group-hover:animate-fade-in"></div>
                 </div>
-                <div className="absolute bottom-8 left-8 bg-white p-6 rounded-xl shadow-lg max-w-sm hover:animate-slide-up">
-                  <div className="flex items-center mb-4">
-                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
-                      <svg className="w-6 h-6 text-cloud-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-                      </svg>
+              </FadeInSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features Detail Section */}
+      <section className="py-20 px-6 bg-secondary/30">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <FadeInSection>
+              <div>
+                <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+                  Smart POS
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+                  All-In-One Point of Sale <span className="gradient-text">Software</span>
+                </h2>
+                <p className="text-muted-foreground mb-8">
+                  Turn any device into a powerful Point of Sale. No special hardware needed. Sell quickly and efficiently from laptops, tablets, or phones.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {[
+                    "Easy barcode scanning",
+                    "Multiple payment options",
+                    "Real-time inventory sync",
+                    "Customer management",
+                    "Discount & tax handling",
+                    "Receipt printing",
+                  ].map((feature) => (
+                    <div key={feature} className="flex items-center gap-3">
+                      <div className="w-6 h-6 rounded-full gradient-bg flex items-center justify-center flex-shrink-0">
+                        <Check className="w-4 h-4 text-primary-foreground" />
+                      </div>
+                      <span className="text-foreground">{feature}</span>
                     </div>
-                    <h4 className="text-lg font-semibold text-gray-900">Easily Controls The Inventory</h4>
-                  </div>
-                  <p className="text-gray-600">
-                    Control The Items In Your Store Locations And Automates The Processes For Tracking And Locating Products.
-                  </p>
+                  ))}
                 </div>
               </div>
-            </div>
+            </FadeInSection>
+            
+            <FadeInSection delay={0.2}>
+              <div className="relative">
+                <div className="rounded-3xl overflow-hidden shadow-elevated">
+                  <img 
+                    src="/lovable-uploads/smart.png" 
+                    alt="Smart POS Software" 
+                    className="w-full h-auto"
+                  />
+                </div>
+                {/* Floating stat card */}
+                <div className="absolute -bottom-6 -left-6 glass-card rounded-2xl p-5 shadow-soft">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center">
+                      <Zap className="w-6 h-6 text-primary-foreground" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-foreground">3x</p>
+                      <p className="text-sm text-muted-foreground">Faster Checkout</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </FadeInSection>
+          </div>
+        </div>
+      </section>
+
+      {/* Inventory Section */}
+      <section className="py-20 px-6">
+        <div className="container mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <FadeInSection className="order-2 lg:order-1">
+              <div className="relative">
+                <div className="rounded-3xl overflow-hidden shadow-elevated">
+                  <img 
+                    src="/images/inventory-pic.jpg" 
+                    alt="Inventory Management" 
+                    className="w-full h-[450px] object-cover"
+                  />
+                </div>
+                {/* Floating card */}
+                <div className="absolute -bottom-6 -right-6 glass-card rounded-2xl p-5 shadow-soft">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-emerald-500 flex items-center justify-center">
+                      <TrendingUp className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-foreground">Real-time</p>
+                      <p className="text-sm text-muted-foreground">Stock Updates</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </FadeInSection>
+
+            <FadeInSection delay={0.2} className="order-1 lg:order-2">
+              <div>
+                <span className="inline-block px-4 py-1.5 rounded-full bg-emerald-100 text-emerald-700 text-sm font-medium mb-4">
+                  Inventory
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+                  Smart Inventory <span className="gradient-text">Management</span>
+                </h2>
+                <p className="text-muted-foreground mb-8">
+                  Keep your inventory always up to date. Perform accurate inventory counts that protect your investment with real-time value information.
+                </p>
+                <div className="space-y-4">
+                  {[
+                    "Create and edit products with images",
+                    "Bulk import from Excel",
+                    "Real-time stock levels per location",
+                    "Automatic low-stock alerts",
+                    "Category management",
+                    "Supplier tracking",
+                  ].map((feature) => (
+                    <div key={feature} className="flex items-center gap-3">
+                      <div className="w-6 h-6 rounded-full bg-emerald-500 flex items-center justify-center flex-shrink-0">
+                        <Check className="w-4 h-4 text-white" />
+                      </div>
+                      <span className="text-foreground">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </FadeInSection>
           </div>
         </div>
       </section>
 
       {/* Reports Section */}
-      <section className="py-20 px-6 bg-white">
+      <section className="py-20 px-6 bg-secondary/30">
         <div className="container mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="order-2 lg:order-1">
-              <div className="h-[500px] relative overflow-hidden rounded-xl group">
-                <div 
-                  className="absolute inset-0 bg-[url('/images/report-pic.jpg')] bg-cover bg-center group-hover:animate-image-scale"
-                ></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:animate-fade-in"></div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <FadeInSection>
+              <div>
+                <span className="inline-block px-4 py-1.5 rounded-full bg-purple-100 text-purple-700 text-sm font-medium mb-4">
+                  Analytics
+                </span>
+                <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+                  Powerful Reports & <span className="gradient-text">Insights</span>
+                </h2>
+                <p className="text-muted-foreground mb-8">
+                  Make data-driven decisions with comprehensive reports. Track sales, monitor trends, and optimize your business from anywhere.
+                </p>
+                <div className="space-y-4">
+                  {[
+                    "Sales & profit reports",
+                    "Employee performance tracking",
+                    "Product & supplier analytics",
+                    "Customer insights",
+                    "Custom date filters",
+                    "Export to Excel, CSV, PDF",
+                  ].map((feature) => (
+                    <div key={feature} className="flex items-center gap-3">
+                      <div className="w-6 h-6 rounded-full bg-purple-500 flex items-center justify-center flex-shrink-0">
+                        <Check className="w-4 h-4 text-white" />
+                      </div>
+                      <span className="text-foreground">{feature}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="bg-gray-900 text-white p-6 rounded-xl mt-6 max-w-sm mx-auto transform -translate-y-20 hover:animate-slide-up">
-                <h4 className="text-lg font-semibold mb-2">
-                  Know The Situation Of Your Business In A Schematic Way And At Any Time
-                </h4>
-              </div>
-            </div>
-            <div className="order-1 lg:order-2">
-              <h3 className="text-cloud-blue font-semibold mb-4">
-                Reports To Help You Make Important Decisions
-              </h3>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                Online Statistics And Reports
-              </h2>
-              <p className="text-gray-600 mb-6">
-                Keep track of the factors that are part of your success and avoid products or services that may cause your losses with reports that are updated in real time.
-              </p>
-              <p className="text-gray-600 mb-8">
-                Check your reports from anywhere and make timely and informed decisions. You can view reports with multiple filters.
-              </p>
-              <div className="space-y-4">
-                {[
-                  "Sales reports, net profit and buying trends",
-                  "Monitor the productivity and performance of your employees with sales representative reports",
-                  "Reports by product, supplier, customer, stock, expense and purchase payment and more",
-                  "View complete sales history",
-                  "Available at any time and from anywhere",
-                  "Filters by customizable dates",
-                  "Download reports in excel, csv and pdf format"
-                ].map((feature, index) => (
-                  <div key={index} className="flex items-start">
-                    <svg className="w-5 h-5 text-cloud-blue mt-1 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                    </svg>
-                    <span className="text-gray-600">{feature}</span>
+            </FadeInSection>
+            
+            <FadeInSection delay={0.2}>
+              <div className="relative">
+                <div className="rounded-3xl overflow-hidden shadow-elevated">
+                  <img 
+                    src="/images/report-pic.jpg" 
+                    alt="Reports & Analytics" 
+                    className="w-full h-[450px] object-cover"
+                  />
+                </div>
+                {/* Floating card */}
+                <div className="absolute -bottom-6 -left-6 glass-card rounded-2xl p-5 shadow-soft">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-xl bg-purple-500 flex items-center justify-center">
+                      <PieChart className="w-6 h-6 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-2xl font-bold text-foreground">Live</p>
+                      <p className="text-sm text-muted-foreground">Dashboard</p>
+                    </div>
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
+            </FadeInSection>
           </div>
         </div>
       </section>
-      z
 
       {/* Testimonials Section */}
-      <section className="py-20 px-6 bg-gray-50">
+      <section className="py-20 px-6">
         <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Trusted by Businesses Worldwide
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              See what our customers are saying about amozTech Solutions
-            </p>
-          </div>
+          <FadeInSection>
+            <div className="text-center mb-16">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
+                Testimonials
+              </span>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Loved by <span className="gradient-text">Businesses</span>
+              </h2>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                See what our customers are saying about amozTech Solutions.
+              </p>
+            </div>
+          </FadeInSection>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-xl shadow-md">
-              <div className="flex mb-4">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <svg key={star} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                ))}
-              </div>
-              <p className="text-gray-600 italic mb-6">
-                "amozTech POS has completely transformed how we manage our retail business. The inventory tracking alone has saved us thousands of dollars."
-              </p>
-              <div>
-                <p className="font-semibold text-gray-800">Sarah Johnson</p>
-                <p className="text-gray-500 text-sm">CEO, Fashion Boutique</p>
-              </div>
-            </div>
-
-            <div className="bg-white p-8 rounded-xl shadow-md">
-              <div className="flex mb-4">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <svg key={star} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                ))}
-              </div>
-              <p className="text-gray-600 italic mb-6">
-                "The invoicing system is a game-changer. We've reduced our billing time by 75% and improved cash flow significantly."
-              </p>
-              <div>
-                <p className="font-semibold text-gray-800">Michael Asamoah</p>
-                <p className="text-gray-500 text-sm">Owner, Tech Solutions</p>
-              </div>
-            </div>
-
-            <div className="bg-white p-8 rounded-xl shadow-md">
-              <div className="flex mb-4">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <svg key={star} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                  </svg>
-                ))}
-              </div>
-              <p className="text-gray-600 italic mb-6">
-                "As a supermarket owner, I needed a system that could handle both front and back-of-house operations. amozTech POS does it all seamlessly."
-              </p>
-              <div>
-                <p className="font-semibold text-gray-800">Hannah Osei</p>
-                <p className="text-gray-500 text-sm">Owner, Fusion Supermarket</p>
-              </div>
-            </div>
+            {testimonials.map((testimonial, index) => (
+              <FadeInSection key={testimonial.author} delay={index * 0.15}>
+                <div className="bg-card p-8 rounded-3xl shadow-soft hover-lift cursor-default h-full flex flex-col">
+                  <div className="flex gap-1 mb-6">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <svg key={star} className="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                    ))}
+                  </div>
+                  <p className="text-foreground italic mb-6 flex-grow">"{testimonial.quote}"</p>
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full gradient-bg flex items-center justify-center text-primary-foreground font-bold">
+                      {testimonial.avatar}
+                    </div>
+                    <div>
+                      <p className="font-semibold text-foreground">{testimonial.author}</p>
+                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                    </div>
+                  </div>
+                </div>
+              </FadeInSection>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-6 hero-gradient">
-        <div className="container mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-            Ready to streamline your business operations?
-          </h2>
-          <p className="text-xl text-gray-700 max-w-3xl mx-auto mb-8">
-            Join hundreds of businesses who trust amozTech Solutions for their daily operations. Get started today with our 14-day free trial.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild className="bg-cloud-blue hover:bg-blue-600 text-white px-8 py-6 text-lg rounded-md">
-              <Link to="/pricing">Start your Free Trial</Link>
-            </Button>
-            <Button variant="outline" className="border-gray-400 text-gray-700 px-8 py-6 text-lg rounded-md">
-              <Link to="/pricing" className="flex items-center">
-                See Pricing <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-          </div>
+      <section className="py-24 px-6 relative overflow-hidden">
+        <div className="absolute inset-0 gradient-bg opacity-10" />
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+        
+        <div className="container mx-auto relative z-10">
+          <FadeInSection>
+            <div className="max-w-3xl mx-auto text-center">
+              <h2 className="text-3xl md:text-5xl font-bold text-foreground mb-6">
+                Ready to <span className="gradient-text">Transform</span> Your Business?
+              </h2>
+              <p className="text-xl text-muted-foreground mb-10">
+                Join hundreds of businesses who trust amozTech for their daily operations. Start your free trial today.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button asChild size="lg" className="gradient-bg text-primary-foreground px-10 py-7 text-lg rounded-2xl shadow-glow hover:shadow-elevated transition-all duration-300 hover:-translate-y-1">
+                  <Link to="/pricing" className="flex items-center gap-2">
+                    Start Free Trial
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="px-10 py-7 text-lg rounded-2xl border-2 hover:bg-secondary transition-all duration-300">
+                  <Link to="/pricing">See Pricing</Link>
+                </Button>
+              </div>
+            </div>
+          </FadeInSection>
         </div>
       </section>
 
