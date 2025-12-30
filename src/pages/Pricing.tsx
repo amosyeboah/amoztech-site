@@ -109,7 +109,14 @@ const PricingPage = () => {
         body: { planId },
       });
 
-      if (error) throw error;
+      // Check if there's an error in the response data
+      if (error) {
+        throw new Error(data?.error || error.message || 'Failed to activate free trial');
+      }
+
+      if (data?.error) {
+        throw new Error(data.error);
+      }
 
       toast({
         title: 'Free Trial Activated!',
@@ -120,7 +127,7 @@ const PricingPage = () => {
       window.location.reload();
     } catch (error: any) {
       toast({
-        title: 'Error',
+        title: 'Free Trial Error',
         description: error.message || 'Failed to activate free trial',
         variant: 'destructive',
       });

@@ -56,8 +56,9 @@ Deno.serve(async (req) => {
     }
 
     if (existingSubscriptions && existingSubscriptions.length > 0) {
+      console.log('User already has a subscription:', existingSubscriptions[0].id);
       return new Response(
-        JSON.stringify({ error: 'Free trial already used. You already have a subscription.' }),
+        JSON.stringify({ error: 'You have already used your free trial. Please subscribe to continue.' }),
         { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
       );
     }
