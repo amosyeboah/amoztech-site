@@ -8,3 +8,15 @@ verify_jwt = true
 
 [functions.paystack-verify]
 verify_jwt = true
+
+[functions.activate-free-trial]
+verify_jwt = true
+
+[functions.admin-data]
+verify_jwt = true
+
+[functions.admin-grant-subscription]
+verify_jwt = true
+
+[functions.admin-send-notification]
+verify_jwt = true
