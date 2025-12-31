@@ -111,10 +111,12 @@ const Navbar = () => {
             
             {user ? (
               <>
-                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-secondary">
-                  <User size={16} className="text-muted-foreground" />
-                  <span className="text-sm font-medium truncate max-w-[120px]">{user.email}</span>
-                </div>
+                <Button asChild variant="ghost" size="sm">
+                  <Link to="/dashboard" className="flex items-center gap-2">
+                    <User size={16} />
+                    <span>Dashboard</span>
+                  </Link>
+                </Button>
                 <Button
                   onClick={handleSignOut}
                   variant="outline"
@@ -172,10 +174,14 @@ const Navbar = () => {
               <div className="pt-4 border-t border-border space-y-2">
                 {user ? (
                   <>
-                    <div className="flex items-center gap-2 px-4 py-3 rounded-xl bg-secondary">
+                    <Link
+                      to="/dashboard"
+                      className="flex items-center gap-2 px-4 py-3 text-foreground font-medium hover:bg-secondary rounded-xl transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
                       <User size={16} className="text-muted-foreground" />
-                      <span className="text-sm font-medium truncate">{user.email}</span>
-                    </div>
+                      <span>Dashboard</span>
+                    </Link>
                     <Button
                       onClick={() => {
                         handleSignOut();
