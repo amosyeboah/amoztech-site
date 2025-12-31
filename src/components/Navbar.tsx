@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Phone, LogOut, User } from 'lucide-react';
+import { Menu, X, Phone, LogOut, User, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import logo from '@/assets/amoztech-logo.png';
 import { supabase } from '@/integrations/supabase/client';
@@ -10,6 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -18,11 +19,19 @@ const Navbar = () => {
     // Get current user
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
+      if (user?.email) {
+        checkAdminStatus();
+      }
     });
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
+      if (session?.user?.email) {
+        checkAdminStatus();
+      } else {
+        setIsAdmin(false);
+      }
     });
 
     // Handle scroll effect
@@ -37,9 +46,19 @@ const Navbar = () => {
     };
   }, []);
 
+  const checkAdminStatus = async () => {
+    try {
+      const { data } = await supabase.functions.invoke("admin-data");
+      setIsAdmin(!data?.error);
+    } catch {
+      setIsAdmin(false);
+    }
+  };
+
   const handleSignOut = async () => {
     try {
       await supabase.auth.signOut();
+      setIsAdmin(false);
       toast({
         title: 'Signed out',
         description: 'You have been signed out successfully',
@@ -111,6 +130,14 @@ const Navbar = () => {
             
             {user ? (
               <>
+                {isAdmin && (
+                  <Button asChild variant="ghost" size="sm" className="text-amber-600 hover:text-amber-700 hover:bg-amber-50">
+                    <Link to="/admin" className="flex items-center gap-2">
+                      <Shield size={16} />
+                      <span>Admin</span>
+                    </Link>
+                  </Button>
+                )}
                 <Button asChild variant="ghost" size="sm">
                   <Link to="/dashboard" className="flex items-center gap-2">
                     <User size={16} />
@@ -174,6 +201,16 @@ const Navbar = () => {
               <div className="pt-4 border-t border-border space-y-2">
                 {user ? (
                   <>
+                    {isAdmin && (
+                      <Link
+                        to="/admin"
+                        className="flex items-center gap-2 px-4 py-3 text-amber-600 font-medium hover:bg-amber-50 rounded-xl transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <Shield size={16} />
+                        <span>Admin Panel</span>
+                      </Link>
+                    )}
                     <Link
                       to="/dashboard"
                       className="flex items-center gap-2 px-4 py-3 text-foreground font-medium hover:bg-secondary rounded-xl transition-colors"
