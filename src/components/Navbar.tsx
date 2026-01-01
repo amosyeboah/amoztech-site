@@ -1,16 +1,25 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Phone, LogOut, User, Shield, ExternalLink } from 'lucide-react';
+import { Menu, X, Phone, LogOut, User, Shield, ExternalLink, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import logo from '@/assets/amoztech-logo.png';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [hasActiveSubscription, setHasActiveSubscription] = useState(false);
+  const [showUpgradeDialog, setShowUpgradeDialog] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -21,6 +30,7 @@ const Navbar = () => {
       setUser(user);
       if (user?.email) {
         checkAdminStatus();
+        checkSubscriptionStatus(user.id);
       }
     });
 
@@ -29,8 +39,10 @@ const Navbar = () => {
       setUser(session?.user ?? null);
       if (session?.user?.email) {
         checkAdminStatus();
+        checkSubscriptionStatus(session.user.id);
       } else {
         setIsAdmin(false);
+        setHasActiveSubscription(false);
       }
     });
 
@@ -52,6 +64,41 @@ const Navbar = () => {
       setIsAdmin(!data?.error);
     } catch {
       setIsAdmin(false);
+    }
+  };
+
+  const checkSubscriptionStatus = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('subscriptions')
+        .select('status, end_date')
+        .eq('user_id', userId)
+        .eq('status', 'active')
+        .maybeSingle();
+
+      if (error) {
+        console.error('Error checking subscription:', error);
+        setHasActiveSubscription(false);
+        return;
+      }
+
+      // Check if subscription exists and is not expired
+      if (data && data.end_date) {
+        const isActive = new Date(data.end_date) > new Date();
+        setHasActiveSubscription(isActive);
+      } else {
+        setHasActiveSubscription(false);
+      }
+    } catch (error) {
+      console.error('Error checking subscription:', error);
+      setHasActiveSubscription(false);
+    }
+  };
+
+  const handlePOSClick = (e: React.MouseEvent) => {
+    if (!hasActiveSubscription) {
+      e.preventDefault();
+      setShowUpgradeDialog(true);
     }
   };
 
@@ -138,17 +185,29 @@ const Navbar = () => {
                     </Link>
                   </Button>
                 )}
-                <Button asChild variant="ghost" size="sm" className="text-primary hover:text-primary/80 hover:bg-primary/10">
-                  <a
-                    href="https://eggstracker.free.nf/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2"
+                {hasActiveSubscription ? (
+                  <Button asChild variant="ghost" size="sm" className="text-primary hover:text-primary/80 hover:bg-primary/10">
+                    <a
+                      href="https://eggstracker.free.nf/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2"
+                    >
+                      <ExternalLink size={16} />
+                      <span>POS</span>
+                    </a>
+                  </Button>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-muted-foreground hover:text-foreground hover:bg-secondary/50 flex items-center gap-2"
+                    onClick={handlePOSClick}
                   >
-                    <ExternalLink size={16} />
+                    <Lock size={16} />
                     <span>POS</span>
-                  </a>
-                </Button>
+                  </Button>
+                )}
                 <Button asChild variant="ghost" size="sm">
                   <Link to="/dashboard" className="flex items-center gap-2">
                     <User size={16} />
@@ -222,16 +281,29 @@ const Navbar = () => {
                         <span>Admin Panel</span>
                       </Link>
                     )}
-                    <a
-                      href="https://eggstracker.free.nf/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-2 px-4 py-3 text-primary font-medium hover:bg-primary/10 rounded-xl transition-colors"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <ExternalLink size={16} />
-                      <span>POS App</span>
-                    </a>
+                    {hasActiveSubscription ? (
+                      <a
+                        href="https://eggstracker.free.nf/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-2 px-4 py-3 text-primary font-medium hover:bg-primary/10 rounded-xl transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        <ExternalLink size={16} />
+                        <span>POS App</span>
+                      </a>
+                    ) : (
+                      <button
+                        className="flex items-center gap-2 px-4 py-3 text-muted-foreground font-medium hover:bg-secondary rounded-xl transition-colors w-full text-left"
+                        onClick={(e) => {
+                          handlePOSClick(e);
+                          setIsMenuOpen(false);
+                        }}
+                      >
+                        <Lock size={16} />
+                        <span>POS App</span>
+                      </button>
+                    )}
                     <Link
                       to="/dashboard"
                       className="flex items-center gap-2 px-4 py-3 text-foreground font-medium hover:bg-secondary rounded-xl transition-colors"
@@ -271,6 +343,38 @@ const Navbar = () => {
           </motion.nav>
         )}
       </AnimatePresence>
+
+      {/* Upgrade Dialog */}
+      <Dialog open={showUpgradeDialog} onOpenChange={setShowUpgradeDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Lock className="h-5 w-5 text-primary" />
+              Subscription Required
+            </DialogTitle>
+            <DialogDescription>
+              You need an active subscription to access the POS application. Upgrade your plan to unlock full access to all features.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex flex-col gap-3 mt-4">
+            <Button
+              className="gradient-bg text-primary-foreground"
+              onClick={() => {
+                setShowUpgradeDialog(false);
+                navigate('/pricing');
+              }}
+            >
+              View Pricing Plans
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setShowUpgradeDialog(false)}
+            >
+              Maybe Later
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </motion.header>
   );
 };
