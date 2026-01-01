@@ -1,4 +1,4 @@
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, Sparkles, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -7,6 +7,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { z } from 'zod';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const paymentReferenceSchema = z.string().regex(/^[a-zA-Z0-9_-]+$/, 'Invalid payment reference format');
 
@@ -17,11 +18,18 @@ const PricingPage = () => {
   const [loading, setLoading] = useState<string | null>(null);
   const [plans, setPlans] = useState<any[]>([]);
   const [user, setUser] = useState<any>(null);
+  const [hasExistingSubscription, setHasExistingSubscription] = useState(false);
+  const [checkingEligibility, setCheckingEligibility] = useState(true);
 
   useEffect(() => {
     // Check auth
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
+      if (user) {
+        checkTrialEligibility(user.id);
+      } else {
+        setCheckingEligibility(false);
+      }
     });
 
     // Load plans
@@ -55,6 +63,26 @@ const PricingPage = () => {
       }
     }
   }, [searchParams]);
+
+  const checkTrialEligibility = async (userId: string) => {
+    try {
+      const { data, error } = await supabase
+        .from('subscriptions')
+        .select('id')
+        .eq('user_id', userId)
+        .limit(1);
+
+      if (error) {
+        console.error('Error checking eligibility:', error);
+      } else {
+        setHasExistingSubscription(data && data.length > 0);
+      }
+    } catch (error) {
+      console.error('Error checking eligibility:', error);
+    } finally {
+      setCheckingEligibility(false);
+    }
+  };
 
   const verifyPayment = async (reference: string) => {
     try {
@@ -196,6 +224,45 @@ const PricingPage = () => {
             </p>
           </div>
 
+          {/* Free Trial Banner */}
+          {!checkingEligibility && !hasExistingSubscription && plans.length > 0 && (
+            <Card className="max-w-2xl mx-auto mb-12 border-primary/20 bg-gradient-to-r from-primary/5 to-primary/10">
+              <CardHeader className="text-center pb-2">
+                <div className="flex justify-center mb-2">
+                  <div className="p-3 rounded-full bg-primary/10">
+                    <Sparkles className="h-8 w-8 text-primary" />
+                  </div>
+                </div>
+                <CardTitle className="text-2xl">Start Your 1-Month Free Trial</CardTitle>
+                <CardDescription className="text-base">
+                  Try all features free for 30 days. No credit card required.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="text-center pb-6">
+                <div className="flex items-center justify-center gap-2 text-muted-foreground mb-4">
+                  <Clock className="h-4 w-4" />
+                  <span>Limited time offer</span>
+                </div>
+                <Button
+                  size="lg"
+                  className="gradient-bg text-primary-foreground px-8"
+                  onClick={() => handleFreeTrial(plans[0].id)}
+                  disabled={loading === `trial-${plans[0]?.id}`}
+                >
+                  {loading === `trial-${plans[0]?.id}` ? 'Activating...' : 'Start Free Trial Now'}
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
+          {hasExistingSubscription && (
+            <div className="max-w-2xl mx-auto mb-12 p-4 rounded-lg bg-muted text-center">
+              <p className="text-muted-foreground">
+                You already have a subscription. Visit your <a href="/dashboard" className="text-primary underline">dashboard</a> to manage it.
+              </p>
+            </div>
+          )}
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {plans.map((plan, index) => {
               const features = typeof plan.features === 'string' ? JSON.parse(plan.features) : plan.features;
@@ -234,7 +301,7 @@ const PricingPage = () => {
                   </p>
                   
                   <div className="space-y-3 mb-6">
-                    {index === 0 && (
+                    {!hasExistingSubscription && (
                       <Button
                         className={`w-full ${
                           isPopular ? 'bg-white text-primary hover:bg-white/90' : ''
@@ -242,7 +309,7 @@ const PricingPage = () => {
                         onClick={() => handleFreeTrial(plan.id)}
                         disabled={loading === `trial-${plan.id}` || loading === plan.id}
                       >
-                        {loading === `trial-${plan.id}` ? 'Activating...' : 'Start 1-Month Free Trial'}
+                        {loading === `trial-${plan.id}` ? 'Activating...' : 'Start Free Trial'}
                       </Button>
                     )}
                     
