@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Phone, LogOut, User, Shield } from 'lucide-react';
+import { Menu, X, Phone, LogOut, User, Shield, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import logo from '@/assets/amoztech-logo.png';
 import { supabase } from '@/integrations/supabase/client';
@@ -130,7 +130,7 @@ const Navbar = () => {
             
             {user ? (
               <>
-                {isAdmin && (
+              {isAdmin && (
                   <Button asChild variant="ghost" size="sm" className="text-amber-600 hover:text-amber-700 hover:bg-amber-50">
                     <Link to="/admin" className="flex items-center gap-2">
                       <Shield size={16} />
@@ -138,6 +138,17 @@ const Navbar = () => {
                     </Link>
                   </Button>
                 )}
+                <Button asChild variant="ghost" size="sm" className="text-primary hover:text-primary/80 hover:bg-primary/10">
+                  <a
+                    href="https://eggstracker.free.nf/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2"
+                  >
+                    <ExternalLink size={16} />
+                    <span>POS</span>
+                  </a>
+                </Button>
                 <Button asChild variant="ghost" size="sm">
                   <Link to="/dashboard" className="flex items-center gap-2">
                     <User size={16} />
@@ -211,6 +222,16 @@ const Navbar = () => {
                         <span>Admin Panel</span>
                       </Link>
                     )}
+                    <a
+                      href="https://eggstracker.free.nf/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 px-4 py-3 text-primary font-medium hover:bg-primary/10 rounded-xl transition-colors"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <ExternalLink size={16} />
+                      <span>POS App</span>
+                    </a>
                     <Link
                       to="/dashboard"
                       className="flex items-center gap-2 px-4 py-3 text-foreground font-medium hover:bg-secondary rounded-xl transition-colors"
