@@ -17,6 +17,7 @@ const PricingPage = () => {
   const [searchParams] = useSearchParams();
   const [loading, setLoading] = useState<string | null>(null);
   const [plans, setPlans] = useState<any[]>([]);
+  const [plansLoading, setPlansLoading] = useState(true);
   const [user, setUser] = useState<any>(null);
   const [hasExistingSubscription, setHasExistingSubscription] = useState(false);
   const [checkingEligibility, setCheckingEligibility] = useState(true);
@@ -44,6 +45,7 @@ const PricingPage = () => {
         } else {
           setPlans(data || []);
         }
+        setPlansLoading(false);
       });
 
     // Check for payment verification
@@ -263,6 +265,26 @@ const PricingPage = () => {
             </div>
           )}
 
+          {plansLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="rounded-lg shadow-lg p-8 bg-white animate-pulse">
+                  <div className="h-8 bg-muted rounded w-1/2 mb-4"></div>
+                  <div className="h-12 bg-muted rounded w-3/4 mb-6"></div>
+                  <div className="h-4 bg-muted rounded w-full mb-6"></div>
+                  <div className="space-y-3 mb-6">
+                    <div className="h-10 bg-muted rounded"></div>
+                    <div className="h-10 bg-muted rounded"></div>
+                  </div>
+                  <div className="space-y-4">
+                    {[1, 2, 3, 4].map((j) => (
+                      <div key={j} className="h-4 bg-muted rounded w-full"></div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
             {plans.map((plan, index) => {
               const features = typeof plan.features === 'string' ? JSON.parse(plan.features) : plan.features;
@@ -314,9 +336,9 @@ const PricingPage = () => {
                     )}
                     
                     <Button
-                      variant="outline"
+                      variant={isPopular ? 'default' : 'outline'}
                       className={`w-full ${
-                        isPopular ? 'border-white text-white hover:bg-white/10' : ''
+                        isPopular ? 'bg-blue-600 hover:bg-blue-700 text-white' : ''
                       }`}
                       onClick={() => handleSubscribe(plan.id)}
                       disabled={loading === plan.id || loading === `trial-${plan.id}`}
@@ -341,6 +363,7 @@ const PricingPage = () => {
               );
             })}
           </div>
+          )}
         </div>
       </section>
 
